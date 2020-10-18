@@ -39,7 +39,7 @@ final class StartTestSession
     {
         $session->queuedQuestions()->sync(
             Question::independent()
-                ->orderByDesc('significance')
+                ->orderBy('significance')
                 ->pluck('id')
         );
     }

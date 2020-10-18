@@ -17,13 +17,6 @@ final class RetrieveNextQuestion
         $this->testSession = TestSession::findOrFail($sessionId);
 
         return $this->notNull($this->testSession->nextQueueQuestion());
-
-        return $this->notNull(
-            $this->testSession
-                ->notAnsweredQuestions()
-                ->orderBy('significance')
-                ->first()
-        );
     }
 
     private function notNull($question): Question

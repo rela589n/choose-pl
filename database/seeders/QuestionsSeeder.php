@@ -7,6 +7,7 @@ use App\Models\Question;
 use App\Models\Result;
 use App\Models\Test;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class QuestionsSeeder extends Seeder
 {
@@ -883,6 +884,200 @@ class QuestionsSeeder extends Seeder
         );
     }
 
+    private static function languagesWebFrontEnd(bool $front): array
+    {
+        return form(
+            [
+                [
+                    'lang_name'    => 'C',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'C++',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'C#',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Java',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'JavaScript',
+                    'significance' => 100,
+                ],
+                [
+                    'lang_name'    => 'TypeScript',
+                    'significance' => 150,
+                ],
+                [
+                    'lang_name'    => 'Objective-C',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'PHP',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Python',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Ruby',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Scala',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Assembler',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Clojure',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Delphi',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Pascal',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'F#',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Go',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Haskell',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Lua',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Perl',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Swift',
+                    'significance' => 0,
+                ],
+                [
+                    'lang_name'    => 'Visual Basic',
+                    'significance' => 0,
+                ],
+            ],
+            $front,
+        );
+    }
+
+    private static function languagesWebBackEnd(bool $back): array
+    {
+        return form(
+            [
+                [
+                    'lang_name'    => 'C',
+                    'significance' => 1,
+                ],
+                [
+                    'lang_name'    => 'C++',
+                    'significance' => 3,
+                ],
+                [
+                    'lang_name'    => 'C#',
+                    'significance' => 100,
+                ],
+                [
+                    'lang_name'    => 'Java',
+                    'significance' => 100,
+                ],
+                [
+                    'lang_name'    => 'JavaScript',
+                    'significance' => 100,
+                ],
+                [
+                    'lang_name'    => 'TypeScript',
+                    'significance' => 100,
+                ],
+                [
+                    'lang_name'    => 'Objective-C',
+                    'significance' => 3,
+                ],
+                [
+                    'lang_name'    => 'PHP',
+                    'significance' => 200,
+                ],
+                [
+                    'lang_name'    => 'Python',
+                    'significance' => 120,
+                ],
+                [
+                    'lang_name'    => 'Ruby',
+                    'significance' => 70,
+                ],
+                [
+                    'lang_name'    => 'Scala',
+                    'significance' => 90,
+                ],
+                [
+                    'lang_name'    => 'Assembler',
+                    'significance' => 1,
+                ],
+                [
+                    'lang_name'    => 'Clojure',
+                    'significance' => 4,
+                ],
+                [
+                    'lang_name'    => 'Delphi',
+                    'significance' => 3,
+                ],
+                [
+                    'lang_name'    => 'Pascal',
+                    'significance' => 1,
+                ],
+                [
+                    'lang_name'    => 'F#',
+                    'significance' => 15,
+                ],
+                [
+                    'lang_name'    => 'Go',
+                    'significance' => 60,
+                ],
+                [
+                    'lang_name'    => 'Haskell',
+                    'significance' => 50,
+                ],
+                [
+                    'lang_name'    => 'Lua',
+                    'significance' => 12,
+                ],
+                [
+                    'lang_name'    => 'Perl',
+                    'significance' => 60,
+                ],
+                [
+                    'lang_name'    => 'Swift',
+                    'significance' => 43,
+                ],
+                [
+                    'lang_name'    => 'Visual Basic',
+                    'significance' => 5,
+                ],
+            ],
+            $back
+        );
+    }
+
     private static function languagesForMobileDev(bool $mobileDev): array
     {
         return form(
@@ -1092,16 +1287,24 @@ class QuestionsSeeder extends Seeder
                 ]
             ],
             [
-                'text'           => 'Бажаєте створювати десктопні додатки?',
+                'text'           => 'Які додатки бажаєте створювати?',
                 'significance'   => 150000,
                 'answer_options' => [
                     [
-                        'content' => 'Так',
-                        'results' => self::languagesForDesktopDev(true)
+                        'content' => 'Мобільні',
+                        'results' => self::languagesForMobileDev(true),
                     ],
                     [
-                        'content' => 'Ні',
-                        'results' => self::languagesForDesktopDev(false)
+                        'content'             => 'Веб-додатки',
+                        'results'             => self::languagesForWebDev(true),
+                        'leadsToQuestionKeys' => [
+                            'web_front',
+                            'web_back',
+                        ]
+                    ],
+                    [
+                        'content' => 'Десктопні',
+                        'results' => self::languagesForDesktopDev(true),
                     ],
                     [
                         'content' => 'Поки що не знаю',
@@ -1109,17 +1312,17 @@ class QuestionsSeeder extends Seeder
                     ],
                 ]
             ],
-            [
-                'text'           => 'Бажаєте створювати сайти?',
+            'web_front' => [
+                'text'           => 'Бажаєте працювати на Front End?',
                 'significance'   => 150000,
                 'answer_options' => [
                     [
                         'content' => 'Так',
-                        'results' => self::languagesForWebDev(true)
+                        'results' => self::languagesWebFrontEnd(true),
                     ],
                     [
                         'content' => 'Ні',
-                        'results' => self::languagesForWebDev(false)
+                        'results' => self::languagesWebFrontEnd(false),
                     ],
                     [
                         'content' => 'Поки що не знаю',
@@ -1127,24 +1330,24 @@ class QuestionsSeeder extends Seeder
                     ],
                 ]
             ],
-            [
-                'text'           => 'Бажаєте створювати мобільні додатки?',
+            'web_back'  => [
+                'text'           => 'Бажаєте працювати на Back End?',
                 'significance'   => 150000,
                 'answer_options' => [
                     [
                         'content' => 'Так',
-                        'results' => self::languagesForMobileDev(true)
+                        'results' => self::languagesWebBackEnd(true),
                     ],
                     [
                         'content' => 'Ні',
-                        'results' => self::languagesForMobileDev(false)
+                        'results' => self::languagesWebBackEnd(false),
                     ],
                     [
                         'content' => 'Поки що не знаю',
                         'results' => self::neutralAnswerSignificance(),
                     ],
                 ]
-            ]
+            ],
         ];
     }
 
@@ -1152,29 +1355,52 @@ class QuestionsSeeder extends Seeder
     {
         $test = Test::findOrFail(1);
 
-        foreach (self::questions() as $questionData) {
-            $question = new Question();
-            $question->text = $questionData['text'];
-            $question->significance = $questionData['significance'];
-            $question->test()->associate($test);
-            $question->save();
+        $questionsData = self::questions();
+        foreach ($questionsData as $questionKey => $questionData) {
+            if (!is_int($questionKey)) {
+                continue;
+            }
 
-            foreach ($questionData['answer_options'] as $optionData) {
-                $option = new AnswerOption();
-                $option->content = $optionData['content'];
-                $option->question()->associate($question);
-                $option->save();
+            $this->createQuestion($test, $questionData, $questionsData);
+        }
+    }
 
-                foreach ($optionData['results']['languages'] as $resultInfo) {
-                    $result = $this->findResultByName($resultInfo['lang_name']);
-                    $option->results()->attach(
-                        [
-                            $result->id => ['significance' => $resultInfo['significance']]
-                        ]
-                    );
-                }
+    private function createQuestion(Test $test, array $questionData, array &$questionsData): Question
+    {
+        $question = new Question();
+        $question->text = $questionData['text'];
+        $question->significance = $questionData['significance'];
+        $question->test()->associate($test);
+        $question->save();
+
+        foreach ($questionData['answer_options'] as $optionData) {
+            $option = new AnswerOption();
+            $option->content = $optionData['content'];
+            $option->question()->associate($question);
+            $option->save();
+
+            $dependentQuestions = array_map(
+                fn($qKey) => $this->createQuestion(
+                    $test,
+                    $questionsData[$qKey],
+                    $questionsData
+                ),
+                $optionData['leadsToQuestionKeys'] ?? []
+            );
+
+            $option->leadsToQuestion()->sync(Arr::pluck($dependentQuestions, 'id'));
+
+            foreach ($optionData['results']['languages'] as $resultInfo) {
+                $result = $this->findResultByName($resultInfo['lang_name']);
+                $option->results()->attach(
+                    [
+                        $result->id => ['significance' => $resultInfo['significance']]
+                    ]
+                );
             }
         }
+
+        return $question;
     }
 
     private function findResultByName(string $name)
@@ -1188,8 +1414,6 @@ class QuestionsSeeder extends Seeder
 
 function form(array $arr, bool $ver): array
 {
-//    $arr = cut($arr);
-
     $max = array_reduce(
         $arr,
         static fn($max, $lang) => max($max, $lang['significance']),
