@@ -6,9 +6,9 @@ use App\Exceptions\Test\Questions\QuestionsListOver;
 use App\Models\Question;
 use App\Models\Test;
 use App\Models\TestSession;
-use App\UseCases\RetrieveNextQuestionCommand;
+use App\UseCases\RetrieveNextQuestion;
 use App\UseCases\RetrieveTopResults;
-use App\UseCases\StartTestSessionCommand;
+use App\UseCases\StartTestSession;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -41,13 +41,13 @@ class TestsController extends Controller
     public function show(
         $testId,
         Request $request,
-        RetrieveNextQuestionCommand $retrieveNextQuestion,
-        StartTestSessionCommand $startSession,
+        RetrieveNextQuestion $retrieveNextQuestion,
+        StartTestSession $startSession,
         RetrieveTopResults $retrieveTopResults
     ) {
         $testSessionId = $request->query->get('sid');
         if (!TestSession::whereId($testSessionId)->exists()) {
-            $testSession = $startSession->execute($testId);
+            $testSession = $startSession($testId);
 
             return $this->startedSessionRedirect($testId, $testSession->id);
         }
@@ -108,16 +108,16 @@ class TestsController extends Controller
         );
     }
 
-    private function retrieveQuestion(RetrieveNextQuestionCommand $retrieveNextQuestion, int $testSessionId): Question
+    private function retrieveQuestion(RetrieveNextQuestion $retrieveNextQuestion, int $testSessionId): Question
     {
-        $question = $retrieveNextQuestion->execute($testSessionId);
+        $question = $retrieveNextQuestion($testSessionId);
         $question->load('answerOptions');
 
         return $question;
     }
 
     private function displayNextQuestionOrPollResult(
-        RetrieveNextQuestionCommand $retrieveNextQuestion,
+        RetrieveNextQuestion $retrieveNextQuestion,
         int $testSessionId,
         RetrieveTopResults $retrieveTopResults
     ) {
@@ -126,16 +126,16 @@ class TestsController extends Controller
                 $retrieveNextQuestion,
                 $testSessionId
             );
+
+            return $this->displayQuestion(
+                $question,
+                $testSessionId
+            );
         } catch (QuestionsListOver $e) {
             return $this->displayPollResult(
                 $retrieveTopResults,
                 $testSessionId
             );
         }
-
-        return $this->displayQuestion(
-            $question,
-            $testSessionId
-        );
     }
 }

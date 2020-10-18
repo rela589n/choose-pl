@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -29,6 +31,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Question whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Question whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static Builder|Question independent()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnswerOption[] $couldBeAccessedFromAnswers
+ * @property-read int|null $could_be_accessed_from_answers_count
  */
 class Question extends Model
 {
@@ -50,5 +55,24 @@ class Question extends Model
     public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class);
+    }
+
+    public function couldBeAccessedFromAnswers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            AnswerOption::class,
+            'answer_leads_to_question',
+            'question_id',
+            'answer_option_id',
+        );
+    }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder|self
+     */
+    public function scopeIndependent($query)
+    {
+        return $query->whereDoesntHave('couldBeAccessedFromAnswers');
     }
 }

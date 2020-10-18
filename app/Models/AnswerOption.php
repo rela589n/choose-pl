@@ -27,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|AnswerOption whereQuestionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AnswerOption whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Question[] $leadsToQuestion
+ * @property-read int|null $leads_to_question_count
  */
 class AnswerOption extends Model
 {
@@ -42,5 +44,15 @@ class AnswerOption extends Model
         return $this->belongsToMany(Result::class, 'answer_result_significance')
             ->using(AnswerResultSignificance::class)
             ->withPivot('significance');
+    }
+
+    public function leadsToQuestion(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Question::class,
+            'answer_leads_to_question',
+            'answer_option_id',
+            'question_id'
+        );
     }
 }

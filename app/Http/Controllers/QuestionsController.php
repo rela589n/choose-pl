@@ -6,18 +6,18 @@ namespace App\Http\Controllers;
 
 use App\Models\AnswerOption;
 use App\Models\Question;
-use App\UseCases\AnswerQuestionCommand;
+use App\UseCases\AnswerTheQuestion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 final class QuestionsController
 {
-    public function storeAnswer($questionId, Request $request, AnswerQuestionCommand $command): RedirectResponse
+    public function storeAnswer($questionId, Request $request, AnswerTheQuestion $answerQuestion): RedirectResponse
     {
         $testSessionId = $request->input('sid');
         $answerId = $request->input('answer');
 
-        $command->execute($testSessionId, $questionId, $answerId);
+        $answerQuestion($testSessionId, $questionId, $answerId);
 
         return redirect()->back();
     }

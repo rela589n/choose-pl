@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -36,6 +37,8 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AnswerOption[] $savedAnswers
  * @property-read int|null $saved_answers_count
  * @method static EloquentBuilder|TestSession whereLastQuestionId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Question[] $queuedQuestions
+ * @property-read int|null $queued_questions_count
  */
 class TestSession extends Model
 {
@@ -81,5 +84,35 @@ class TestSession extends Model
     public function resultScores(): HasMany
     {
         return $this->hasMany(TestSessionResult::class, 'test_session_id');
+    }
+
+    public function queuedQuestions(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Question::class,
+            'session_questions_queue',
+            'test_session_id',
+            'question_id'
+        );
+    }
+
+    public function nextQueueQuestion(): ?Question
+    {
+        /** @var Question $next */
+        $next = $this->queuedQuestions()->first();
+
+        return $next;
+    }
+
+    public function removeQuestionFromQueue(Question $question): void
+    {
+        $this->queuedQuestions()
+            ->detach($question->id);
+    }
+
+    public function addQuestionsToQueue(Collection $questions): void
+    {
+        $this->queuedQuestions()
+            ->attach($questions->pluck('id'));
     }
 }

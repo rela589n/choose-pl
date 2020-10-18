@@ -8,13 +8,15 @@ use App\Exceptions\Test\Questions\QuestionsListOver;
 use App\Models\Question;
 use App\Models\TestSession;
 
-final class RetrieveNextQuestionCommand
+final class RetrieveNextQuestion
 {
     private TestSession $testSession;
 
-    public function execute($sessionId): Question
+    public function __invoke($sessionId): Question
     {
         $this->testSession = TestSession::findOrFail($sessionId);
+
+        return $this->notNull($this->testSession->nextQueueQuestion());
 
         return $this->notNull(
             $this->testSession
