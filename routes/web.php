@@ -30,4 +30,10 @@ Route::post('questions/{question}/answer', [QuestionsController::class, 'storeAn
 Route::resource('questions', QuestionsController::class)
     ->only(['edit', 'update']);
 
+Route::post('questions/create-empty', [QuestionsController::class, 'createEmpty'])
+->name('questions.create-empty');
+
+Route::get('questions/delete/{id}', [QuestionsController::class, 'delete'])
+    ->name('questions.delete');
+
 Route::redirect('/', \route('tests.index'));
