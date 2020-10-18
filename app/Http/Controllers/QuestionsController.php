@@ -31,7 +31,9 @@ final class QuestionsController
             ->select(\DB::raw('AVG(significance) as average_significance'))
             ->first()['average_significance'];
 
-        return view('pages.questions.edit', compact('question', 'averageSignificance'));
+        $questionsToFollow = Question::all();
+
+        return view('pages.questions.edit', compact('question', 'averageSignificance', 'questionsToFollow'));
     }
 
     public function update($id, Request $request)
@@ -41,7 +43,10 @@ final class QuestionsController
 
         foreach ($request->input('ans_opt') as $optionId => $opt) {
             $option = AnswerOption::findOrFail($optionId);
+            $option->content = $opt['content'];
             $option->results()->detach();
+
+            $option->leadsToQuestion()->sync($opt['leads_to'] ?? []);
 
             foreach ($opt['res'] as $resultId => $significance) {
                 $option->results()->attach(

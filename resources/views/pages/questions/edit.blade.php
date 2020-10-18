@@ -26,7 +26,19 @@
             <ul class="answerOptions">
                 @foreach($question->answerOptions as $option)
                     <li>
-                        <p>{{ $option->content }}</p>
+                        <input name="ans_opt[{{$option->id}}][content]" type="text" value="{{ $option->content }}">
+                        <h5>Обраний варіант відповіді призводить до питань:</h5>
+                        <select name="ans_opt[{{$option->id}}][leads_to][]" multiple>
+                            @foreach($questionsToFollow as $question)
+                                <option
+                                    value="{{ $question->id }}"
+                                @if($option->leadsToQuestion->contains('id', $question->id)) selected @endif
+                                >
+                                    {{ $question->text }}
+                                </option>
+                            @endforeach
+                        </select>
+
                         <p>На скільки сильно поточного варіанта відповіді впливає на відповідний результат:</p>
                         <ul>
                             @foreach($option->results  as $result)

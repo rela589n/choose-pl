@@ -22,6 +22,7 @@ Route::get(
     }
 );
 
+
 Route::resource('tests', TestsController::class);
 Route::post('questions/{question}/answer', [QuestionsController::class, 'storeAnswer'])
     ->name('questions.answer');
@@ -29,3 +30,4 @@ Route::post('questions/{question}/answer', [QuestionsController::class, 'storeAn
 Route::resource('questions', QuestionsController::class)
     ->only(['edit', 'update']);
 
+Route::redirect('/', \route('tests.index'));
