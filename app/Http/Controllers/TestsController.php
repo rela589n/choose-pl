@@ -24,20 +24,6 @@ class TestsController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
     public function show(
         $testId,
         Request $request,
@@ -63,16 +49,6 @@ class TestsController extends Controller
     {
         $test = Test::with('questions')->findOrFail($id);
         return view('pages.tests.edit', compact('test'));
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
     }
 
     private function startedSessionRedirect($testId, $testSessionId): RedirectResponse
