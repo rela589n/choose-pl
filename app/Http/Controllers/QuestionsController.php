@@ -12,7 +12,7 @@ use App\UseCases\AnswerTheQuestion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-final class QuestionsController
+final class QuestionsController  extends Controller
 {
     public function storeAnswer($questionId, Request $request, AnswerTheQuestion $answerQuestion): RedirectResponse
     {
