@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\TestsController;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,13 @@ Route::get('questions/delete/{id}', [QuestionsController::class, 'delete'])
     ->name('questions.delete');
 
 Route::redirect('/', \route('tests.index'));
+
+Route::get('docs/index/', [DocumentationController::class, 'index'])
+    ->name('docs.index');
+
+Route::get('docs/pass-test/', [DocumentationController::class, 'passTest'])
+    ->name('docs.pass-test');
+
+Route::get('docs/edit-test/', [DocumentationController::class, 'editTest'])
+    ->name('docs.edit-test');
+
