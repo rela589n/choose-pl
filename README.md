@@ -17,6 +17,12 @@ Configure `.env` (name, url, database)
 php artisan migrate:fresh --seed
 ```
 
+Create a symbolic link for public storage:
+```bash
+php artisan storage:link
+```
+
+Run web server:
 ```
 php artisan serve
 ```
